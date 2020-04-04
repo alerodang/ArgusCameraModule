@@ -1,0 +1,50 @@
+version: "3"
+services:
+  rabbitmq:
+    image: rabbitmq:3-management
+    hostname: rabbitmq
+    ports:
+      - "15672:15672"
+      - "5672:5672"
+    environment:
+      - RABBITMQ_NODENAME=rabbitmq
+    healthcheck:
+      test: [ "CMD", "nc", "-z", "localhost", "5672" ]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+
+  image-capturer:
+    build: image-capturer-container/
+    restart: on-failure
+    depends_on:
+      - rabbitmq
+    environment:
+      - CAPTURES_FOLDER=/captures
+      - MQ_HOST=rabbitmq
+    volumes:
+      - ./image-capturer-container/application:/application
+      - ./data-volume/captures:/captures
+    ports:
+      - "5000:5000"
+    devices:
+      - "/dev/video0:/dev/video0"
+  
+  image-uploader:
+    build: image-uploader-container/
+    restart: on-failure
+    depends_on:
+      - rabbitmq
+    environment:
+      - CAPTURES_FOLDER=/captures
+      - MQ_HOST=rabbitmq
+      - MQ_QUEUE=captured-image-queue
+      - ARGUS_UPLOAD_ENDPOINT_URL= # TODO
+    volumes:
+      - ./image-uploader-container/application:/application/
+      - ./data-volume/captures:/captures
+    ports:
+      - "5001:5001"
+
+volumes:
+  data-volume:
