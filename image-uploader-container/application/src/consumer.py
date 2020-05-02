@@ -1,4 +1,5 @@
 import pika
+import json
 
 from image_uploader_service import ImageUploaderService
 
@@ -10,12 +11,12 @@ class Consumer:
         self.image_uploader_service = ImageUploaderService(url)
 
     def callback(self, ch, method, properties, body):
-        print(" [x] Received %r" % body)
-        path = body.get('path')
-        print(" [x] Loading image from %r", % path)
-        image = self.image_uploader_service.getImage(path)
-        print(" [x] Sending image")
-        self.image_uploader_service.send_image(image)
+        json_body = json.loads(body.decode('utf-8'))
+        path = json_body.get('path')
+        print(' [x] Loading image from', path)
+        image = self.image_uploader_service.get_image(path)
+        print(' [x] Send image')
+        self.image_uploader_service.send_image(image, path)
 
     def consume(self):
         connection = pika.BlockingConnection(pika.ConnectionParameters(self.mq_host))

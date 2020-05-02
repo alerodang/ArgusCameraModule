@@ -22,6 +22,8 @@ services:
     environment:
       - CAPTURES_FOLDER=/captures
       - MQ_HOST=rabbitmq
+      - MOVEMENT_SENSIBILITY=5000
+      - MILLISECONDS_BETWEEN_CAPTURES=2000
     volumes:
       - ./image-capturer-container/application:/application
       - ./data-volume/captures:/captures
@@ -39,7 +41,10 @@ services:
       - CAPTURES_FOLDER=/captures
       - MQ_HOST=rabbitmq
       - MQ_QUEUE=captured-image-queue
-      - ARGUS_UPLOAD_ENDPOINT_URL= # TODO
+      - ARGUS_UPLOAD_URL=https://iuw5f54s21.execute-api.eu-west-1.amazonaws.com/dev/capture
+      - ACCOUNT= # ACCOUNT
+      - PRODUCER_SECRET= # PRODUCER_SECRET
+      - PRODUCER_NAME= #PRODUCER_NAME
     volumes:
       - ./image-uploader-container/application:/application/
       - ./data-volume/captures:/captures
