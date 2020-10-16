@@ -26,7 +26,7 @@ services:
       - MILLISECONDS_BETWEEN_CAPTURES=2000
     volumes:
       - ./image-capturer-container/application:/application
-      - ./data-volume/captures:/captures
+      - ./data/captures:/captures
     ports:
       - "5000:5000"
     devices:
@@ -41,15 +41,13 @@ services:
       - CAPTURES_FOLDER=/captures
       - MQ_HOST=rabbitmq
       - MQ_QUEUE=captured-image-queue
-      - ARGUS_UPLOAD_URL=https://iuw5f54s21.execute-api.eu-west-1.amazonaws.com/dev/capture
-      - ACCOUNT= # ACCOUNT
-      - PRODUCER_SECRET= # PRODUCER_SECRET
-      - PRODUCER_NAME= #PRODUCER_NAME
+      - ARGUS_UPLOAD_URL=https://z2gjqt3zgi.execute-api.eu-west-1.amazonaws.com/dev/capture
+      - ACCOUNT=alerodriguezangulo@gmail.com
+      - PRODUCER_SECRET=somesecret
+      - PRODUCER_NAME=door
     volumes:
       - ./image-uploader-container/application:/application/
-      - ./data-volume/captures:/captures
+      - ./data/captures:/captures
     ports:
       - "5001:5001"
 
-volumes:
-  data-volume:
