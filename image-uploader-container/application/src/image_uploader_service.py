@@ -10,7 +10,7 @@ class ImageUploaderService:
         self.request_manager = RequestManager()
 
     def send_image(self, image, path):
-        self.request_manager.post(self.url, image, path)
+        self.request_manager.post(self.url, image, path, 1)
         
     def get_image(self, path):
         with open(path, "rb") as img_file:

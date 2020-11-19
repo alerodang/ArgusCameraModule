@@ -1,6 +1,7 @@
 import pika
 import json
 
+
 from image_uploader_service import ImageUploaderService
 
 class Consumer:
@@ -16,7 +17,13 @@ class Consumer:
         print(' [x] Loading image from', path)
         image = self.image_uploader_service.get_image(path)
         print(' [x] Send image')
-        self.image_uploader_service.send_image(image, path)
+
+        try:
+            self.image_uploader_service.send_image(image, path)
+        except Exception as err:
+            print(' [x] Exception sending image', err)
+            pass
+        
 
     def consume(self):
         connection = pika.BlockingConnection(pika.ConnectionParameters(self.mq_host))

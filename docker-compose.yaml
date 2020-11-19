@@ -23,7 +23,7 @@ services:
       - CAPTURES_FOLDER=/captures
       - MQ_HOST=rabbitmq
       - MOVEMENT_SENSIBILITY=5000
-      - MILLISECONDS_BETWEEN_CAPTURES=2000
+      - MILLISECONDS_BETWEEN_CAPTURES=1000
     volumes:
       - ./image-capturer-container/application:/application
       - ./data/captures:/captures
