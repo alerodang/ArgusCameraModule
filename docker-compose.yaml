@@ -43,8 +43,8 @@ services:
       - MQ_QUEUE=captured-image-queue
       - ARGUS_UPLOAD_URL=https://z2gjqt3zgi.execute-api.eu-west-1.amazonaws.com/dev/capture
       - ACCOUNT=alerodriguezangulo@gmail.com
-      - PRODUCER_SECRET=somesecret
-      - PRODUCER_NAME=door
+      - PRODUCER_NAME=door #PRODUCER_NAME=name
+      - PRODUCER_SECRET=somesecret #RODUCER_SECRET=secret
     volumes:
       - ./image-uploader-container/application:/application/
       - ./data/captures:/captures
